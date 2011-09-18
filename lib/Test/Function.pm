@@ -6,38 +6,29 @@ our $VERSION = '0.01';
 sub import {
     my $caller = caller(0);
 
-    {
-        my $_cache = +{};
-        my $cache_func = sub {
-            my ($fake_code, $org_code) = @_;
-            $_cache->{$fake_code} = $org_code if $org_code;
-            $_cache->{$fake_code};
-        };
-
-        no strict 'refs';
-        *{"${caller}::MODIFY_CODE_ATTRIBUTES"}  = \&MODIFY_CODE_ATTRIBUTES;
-        *{"${caller}::_cache"} = $cache_func;
-    }
+    no strict 'refs';
+    *{"${caller}::MODIFY_CODE_ATTRIBUTES"} = \&MODIFY_CODE_ATTRIBUTES;
 }
 
 sub _fake {
-    my ($pkg, $code, $funcname) = @_;
-    my $cache = \&{"${pkg}::_cache"};
+    my ($pkg, $code) = @_;
 
     my $fake = sub {
-        my $fake_code = \&{"${pkg}::${funcname}"};
         local $Test::Builder::Level = $Test::Builder::Level + 2;
-        $cache->($fake_code)->(@_);
+        $code->(@_);
     };
-    $cache->($fake => $code);
 
     no strict 'refs';
-   *{"${pkg}::${funcname}"} = $fake;
+    for (reverse sort keys %{"${pkg}::"}) {
+        next if +(*{"${pkg}::$_"}{CODE} || sub {}) ne $code;
+        *{"${pkg}::$_"} = $fake;
+        last;
+    }
 }
 
 sub MODIFY_CODE_ATTRIBUTES {
     my ($pkg, $code, @attrs) = @_;
-    _fake($pkg, $code, $attrs[0]);
+    _fake($pkg, $code);
     return;
 }
 
