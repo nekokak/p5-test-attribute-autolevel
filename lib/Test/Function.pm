@@ -18,12 +18,11 @@ sub _fake {
         $code->(@_);
     };
 
+    require B;
+    my $funcname = B::svref_2object($code)->GV->NAME;
+
     no strict 'refs';
-    for (reverse sort keys %{"${pkg}::"}) {
-        next if +(*{"${pkg}::$_"}{CODE} || sub {}) ne $code;
-        *{"${pkg}::$_"} = $fake;
-        last;
-    }
+    *{"${pkg}::${funcname}"} = $fake;
 }
 
 sub MODIFY_CODE_ATTRIBUTES {
