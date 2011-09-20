@@ -1,6 +1,7 @@
 package Test::Attribute::AutoLevel;
 use strict;
 use warnings;
+use 5.012001;
 our $VERSION = '0.01';
 
 sub import {
