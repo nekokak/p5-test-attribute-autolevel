@@ -1,8 +1,6 @@
 use inc::Module::Install;
-name 'Test-Function';
-all_from 'lib/Test/Function.pm';
-
-#requires '';
+name 'Test-Attribute-AutoLevel';
+all_from 'lib/Test/Attribute/AutoLevel.pm';
 
 test_requires 'Test::More' => '0.94';
 

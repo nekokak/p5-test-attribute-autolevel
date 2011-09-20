@@ -1,4 +1,4 @@
-package Test::Function;
+package Test::Attribute::AutoLevel;
 use strict;
 use warnings;
 our $VERSION = '0.01';
@@ -27,7 +27,7 @@ sub _fake {
 
 sub _MODIFY_CODE_ATTRIBUTES {
     my ($pkg, $code, @attrs) = @_;
-    return unless $attrs[0] eq 'Test';
+    return unless $attrs[0] eq 'AutoLevel';
     _fake($pkg, $code);
     return;
 }
@@ -38,21 +38,21 @@ __END__
 
 =head1 NAME
 
-Test::Function - auto set $Test::Builder::Level
+Test::Attribute::AutoLevel - auto set $Test::Builder::Level
 
 =head1 SYNOPSIS
 
   use Test::More;
-  use Test::Function;
+  use Test::Attribute::AutoLevel;
   
-  sub test_foo : Test {
-      ok 0;
+  sub test_foo : AutoLevel {
+      fail 'always failed.';
   }
   test_foo(); # test failed. report line at call test_foo().
 
 =head1 DESCRIPTION
 
-Test::Function is auto set $Test::Builder::Level.
+Test::Attribute::AutoLevel is auto set $Test::Builder::Level.
 
 =head1 AUTHOR
 
@@ -61,6 +61,8 @@ Atsushi Kobayashi E<lt>nekokak _at_ gmail _dot_ comE<gt>
 =head1 CONTRIBUTORS
 
 kamipo
+
+xaicron
 
 =head1 LICENSE
 

@@ -1,11 +1,11 @@
-This is Perl module Test::Function.
+This is Perl module Test::Attribute::AutoLevel.
 
 INSTALLATION
 
-Test::Function installation is straightforward. If your CPAN shell is set up,
+Test::Attribute::AutoLeven installation is straightforward. If your CPAN shell is set up,
 you should just be able to do
 
-    % cpanm Test::Function
+    % cpanm Test::Attribute::AutoLevel
 
 Download it, unpack it, then build it as per the usual:
 
@@ -18,9 +18,9 @@ Then install it:
 
 DOCUMENTATION
 
-Test::Function documentation is available as in POD. So you can do:
+Test::Attribute::AutoLevel documentation is available as in POD. So you can do:
 
-    % perldoc Test::Function
+    % perldoc Test::Attribute::AutoLevel
 
 to read the documentation online with your favorite pager.
 
