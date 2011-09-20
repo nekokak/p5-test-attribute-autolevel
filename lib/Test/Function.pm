@@ -27,7 +27,7 @@ sub _fake {
 
 sub _MODIFY_CODE_ATTRIBUTES {
     my ($pkg, $code, @attrs) = @_;
-    return unless $attrs[0] =~ /^Test$/;
+    return unless $attrs[0] eq 'Test';
     _fake($pkg, $code);
     return;
 }
