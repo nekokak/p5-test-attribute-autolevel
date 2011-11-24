@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Devel::Peek ();
 use 5.008001;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 sub import {
     my $caller = caller(0);

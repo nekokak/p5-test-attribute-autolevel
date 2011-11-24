@@ -1,5 +1,9 @@
 Revision history for Perl extension Test::Attribute::AutoLevel
 
+0.02
+   2011/11/24
+        - use Devel::Peek. (xaicron++)
+
 0.01
    Sat Sep 17 23:39:42 2011
         - initial release.
