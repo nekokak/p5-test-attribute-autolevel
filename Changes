@@ -1,5 +1,9 @@
 Revision history for Perl extension Test::Attribute::AutoLevel
 
+0.03
+   2011/12/02
+        -  fixed SEGV. (xaicron++)
+
 0.02
    2011/11/24
         - use Devel::Peek. (xaicron++)
