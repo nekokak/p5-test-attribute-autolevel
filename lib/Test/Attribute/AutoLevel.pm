@@ -1,7 +1,6 @@
 package Test::Attribute::AutoLevel;
 use strict;
 use warnings;
-use Devel::Peek ();
 use 5.008001;
 our $VERSION = '0.02';
 
@@ -12,18 +11,16 @@ sub import {
     *{"${caller}::MODIFY_CODE_ATTRIBUTES"} = \&_MODIFY_CODE_ATTRIBUTES;
 }
 
+my $stash = {};
 sub _fake {
     my ($pkg, $code) = @_;
 
+    $stash->{$pkg} ||= {};
     my $fake = sub {
         local $Test::Builder::Level = $Test::Builder::Level + 2;
         $code->(@_);
     };
-
-    (my $funcname) = Devel::Peek::CvGV($code) =~ m/::(.*)$/;
-
-    no strict 'refs';
-    *{"${pkg}::${funcname}"} = $fake;
+    $stash->{$pkg}{"$code"} = $fake;
 }
 
 sub _MODIFY_CODE_ATTRIBUTES {
@@ -31,6 +28,21 @@ sub _MODIFY_CODE_ATTRIBUTES {
     return unless $attrs[0] eq 'AutoLevel';
     _fake($pkg, $code);
     return;
+}
+
+sub CHECK {
+    my $pkg = caller;
+    return unless exists $stash->{$pkg};
+
+    no strict 'refs';
+    for my $name (keys %{"$pkg\::"}) {
+        my $code = *{"${pkg}::${name}"}{CODE} || next;
+        my $fake = $stash->{$pkg}{"$code"}    || next;
+        no warnings 'redefine';
+        *{"${pkg}::${name}"} = $fake;
+    }
+
+    delete $stash->{$pkg}; # cleanup
 }
 
 1;
