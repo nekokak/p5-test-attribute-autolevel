@@ -1,33 +1,18 @@
 use strict;
 use warnings;
 use Test::More;
-use IPC::Open3;
-use IO::Select;
+use App::Prove;
+use Capture::Tiny 'capture';
 
-my $pid = open3(\*CHILD_IN, \*CHILD_OUT, \*CHILD_ERR, q{perl -MApp::Prove -e 'my $app=App::Prove->new; $app->process_args("-lvc","./t/internal_test"); exit( $app->run ? 0 : 1 );'})
- or die 'internal_test execute failed....';
+my (undef, $stderr, undef) = capture {
+    my $prove = App::Prove->new;
+    $prove->process_args("-lvc","./t/internal_test");
+    $prove->run;
+};
 
-my ($stdin, $stdout, $stderr) = (\*CHILD_IN, \*CHILD_OUT, \*CHILD_ERR);
+my @lines = grep { $_ } map { $_ =~ /^#   at/ ? $_ : undef } split /\n/, $stderr;
 
-my $reader = IO::Select->new;
-$reader->add($stderr);
-
-my @tests;
-while (my @ready = $reader->can_read()) {
-    for my $fh (@ready) {
-        my $line = <$fh>;
-        if (not defined $line)  {
-            close $fh;
-        } else {
-            chomp $line;
-            next unless $line;
-            next unless $line =~ /at .\/t\/internal_test line/;
-            push @tests, $line;
-        }
-    }
-}
-
-is_deeply \@tests, [
+is_deeply \@lines, [
     '#   at ./t/internal_test line 19.',
     '#   at ./t/internal_test line 20.',
     '#   at ./t/internal_test line 20.',

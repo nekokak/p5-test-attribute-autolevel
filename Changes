@@ -1,5 +1,9 @@
 Revision history for Perl extension Test::Attribute::AutoLevel
 
+0.05
+   2011/12/15
+        - use Capture::Tiny.
+
 0.04
    2011/12/15
         - use App::Prove. (pppjam++)
