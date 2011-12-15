@@ -4,7 +4,7 @@ use Test::More;
 use IPC::Open3;
 use IO::Select;
 
-my $pid = open3(\*CHILD_IN, \*CHILD_OUT, \*CHILD_ERR, 'prove -lvc ./t/internal_test')
+my $pid = open3(\*CHILD_IN, \*CHILD_OUT, \*CHILD_ERR, q{perl -MApp::Prove -e 'my $app=App::Prove->new; $app->process_args("-lvc","./t/internal_test"); exit( $app->run ? 0 : 1 );'})
  or die 'internal_test execute failed....';
 
 my ($stdin, $stdout, $stderr) = (\*CHILD_IN, \*CHILD_OUT, \*CHILD_ERR);
