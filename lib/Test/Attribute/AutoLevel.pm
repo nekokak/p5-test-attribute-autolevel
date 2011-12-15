@@ -2,7 +2,7 @@ package Test::Attribute::AutoLevel;
 use strict;
 use warnings;
 use 5.008001;
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 sub import {
     my $caller = caller(0);
@@ -76,6 +76,8 @@ Atsushi Kobayashi E<lt>nekokak _at_ gmail _dot_ comE<gt>
 kamipo
 
 xaicron
+
+pppjam
 
 =head1 LICENSE
 
