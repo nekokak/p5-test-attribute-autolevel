@@ -5,7 +5,8 @@ use 5.008001;
 our $VERSION = '0.05';
 
 sub import {
-    my $caller = caller(0);
+    my ($class, %args) = @_;
+    my $caller = caller($args{depth} || 0);
 
     no strict 'refs';
     *{"${caller}::MODIFY_CODE_ATTRIBUTES"} = \&_MODIFY_CODE_ATTRIBUTES;
