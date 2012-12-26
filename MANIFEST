@@ -16,7 +16,10 @@ META.yml
 README
 t/00_compile.t
 t/basic.t
+t/depth.t
+t/depth_test
 t/internal_test
+t/SomeTest.pm
 xt/01_perlcritic.t
 xt/02_pod.t
 xt/perlcriticrc
