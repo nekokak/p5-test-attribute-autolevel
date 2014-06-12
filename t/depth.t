@@ -6,7 +6,7 @@ use Capture::Tiny 'capture';
 
 my (undef, $stderr, undef) = capture {
     my $prove = App::Prove->new;
-    $prove->process_args("-lvc","./t/depth_test");
+    $prove->process_args("-lvc","--norc","./t/depth_test");
     $prove->run;
 };
 
